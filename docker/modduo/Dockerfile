@@ -25,13 +25,14 @@ ENV DYLD_LIBRARY_PATH="/llvm/lib:$DYLD_LIBRARY_PATH"
 # Get Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
-RUN rustup target add armv7-unknown-linux-gnueabihf
+RUN rustup install 1.58.1
+RUN rustup target add armv7-unknown-linux-gnueabihf --toolchain 1.58.1
 
 # Copy files
 COPY ./ ./
 
 # Build 
-RUN cargo build --release --target armv7-unknown-linux-gnueabihf
+RUN cargo +1.58.1 build --release --target armv7-unknown-linux-gnueabihf
 
 # Export
 FROM scratch AS modduo-export
