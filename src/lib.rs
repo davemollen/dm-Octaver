@@ -37,11 +37,11 @@ impl Plugin for DmOctaver {
     // Process a chunk of audio. The audio ports are dereferenced to slices, which the plugin
     // iterates over.
     fn run(&mut self, ports: &mut Ports, _features: &mut ()) {
-        let threshold = Dbtoa::run(*ports.threshold);
-        let gain = Dbtoa::run(*ports.gain);
+        let threshold = Dbtoa::process(*ports.threshold);
+        let gain = Dbtoa::process(*ports.gain);
         let mix = *ports.mix * 0.01;
         for (in_frame, out_frame) in Iterator::zip(ports.input.iter(), ports.output.iter_mut()) {
-            *out_frame = self.octaver.run(*in_frame, threshold, gain, mix);
+            *out_frame = self.octaver.process*in_frame, threshold, gain, mix);
         }
     }
 }

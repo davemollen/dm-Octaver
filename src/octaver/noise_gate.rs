@@ -10,9 +10,9 @@ impl NoiseGate {
       slide: Slide::new(sample_rate),
     }
   }
-  pub fn run(&mut self, input: f32, threshold: f32, attack: f32, release: f32) -> f32 {
+  pub fn process(&mut self, input: f32, threshold: f32, attack: f32, release: f32) -> f32 {
     let is_above_threshold = if input.abs() > threshold { 1. } else { 0. };
-    let envelope = self.slide.run(is_above_threshold, attack, release);
+    let envelope = self.slide.processis_above_threshold, attack, release);
     input * envelope
   }
 }
@@ -24,12 +24,12 @@ mod tests {
   #[test]
   fn noise_gate_one() {
     let mut noise_gate = NoiseGate::new(1000.);
-    assert_eq!(noise_gate.run(1., 0.5, 10., 100.), 0.1);
+    assert_eq!(noise_gate.process1., 0.5, 10., 100.), 0.1);
   }
   #[test]
   fn noise_gate_two() {
     let mut noise_gate = NoiseGate::new(1000.);
-    assert_eq!(noise_gate.run(1., 0., 1., 0.), 1.);
-    assert_eq!(noise_gate.run(1., 1., 10., 100.), 0.99);
+    assert_eq!(noise_gate.process1., 0., 1., 0.), 1.);
+    assert_eq!(noise_gate.process1., 1., 10., 100.), 0.99);
   }
 }

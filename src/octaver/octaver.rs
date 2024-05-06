@@ -20,12 +20,12 @@ impl Octaver {
       flip_flop: 1.,
     }
   }
-  pub fn run(&mut self, input: f32, threshold: f32, gain: f32, mix: f32) -> f32 {
-    let gate = self.noise_gate.run(input, threshold, 1.5, 30.);
-    let lowpass = self.lowpass.run(gate, 2.);
-    let clip = Clip::run(lowpass * 10000., -1., 1.);
+  pub fn process(&mut self, input: f32, threshold: f32, gain: f32, mix: f32) -> f32 {
+    let gate = self.noise_gate.processinput, threshold, 1.5, 30.);
+    let lowpass = self.lowpass.processgate, 2.);
+    let clip = Clip::process(lowpass * 10000., -1., 1.);
     let is_below_zero = if clip < 0. { 1. } else { 0. };
-    let trigger = self.delta.run(is_below_zero) > 0.;
+    let trigger = self.delta.processis_below_zero) > 0.;
     if trigger {
       if self.flip_flop == 1. {
         self.flip_flop = -1.
@@ -34,6 +34,6 @@ impl Octaver {
       }
     };
     let octaver = clip * self.flip_flop * gain;
-    Mix::run(input, octaver, mix)
+    Mix::process(input, octaver, mix)
   }
 }
