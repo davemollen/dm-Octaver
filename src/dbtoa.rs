@@ -12,7 +12,7 @@ impl Dbtoa {
 
 #[cfg(test)]
 mod dbtoa {
-  use super::*;
+  use super::Dbtoa;
 
   #[test]
   fn test() {
