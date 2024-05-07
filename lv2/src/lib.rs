@@ -1,9 +1,7 @@
 extern crate lv2;
+extern crate octaver;
 use lv2::prelude::*;
-mod octaver;
-use octaver::Octaver;
-mod dbtoa;
-use dbtoa::Dbtoa;
+use octaver::{Dbtoa, Octaver};
 
 #[derive(PortCollection)]
 struct Ports {

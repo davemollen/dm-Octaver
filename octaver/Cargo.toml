@@ -2,9 +2,4 @@
 name = "octaver"
 version = "0.1.0"
 authors = ["davemollen <davemollen@gmail.com>"]
-
-[dependencies]
-lv2 = "0.6.0"
-
-[lib]
-crate-type = ["cdylib"]
+edition = "2021"

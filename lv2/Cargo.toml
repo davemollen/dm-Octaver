@@ -1,0 +1,11 @@
+[package]
+name = "dm_octaver"
+version = "0.1.0"
+authors = ["davemollen <davemollen@gmail.com>"]
+
+[dependencies]
+lv2 = "0.6.0"
+octaver = { path = "../octaver" }
+
+[lib]
+crate-type = ["cdylib"]

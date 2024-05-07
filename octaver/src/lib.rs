@@ -1,7 +1,9 @@
+mod dbtoa;
 mod delta;
 mod lowpass;
 mod mix;
 mod noise_gate;
+pub use dbtoa::Dbtoa;
 use {delta::Delta, lowpass::Lowpass, mix::Mix, noise_gate::NoiseGate};
 
 pub struct Octaver {
