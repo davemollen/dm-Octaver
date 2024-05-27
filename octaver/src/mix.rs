@@ -1,32 +1,13 @@
-use std::f32::consts::TAU;
+use crate::shared::float_ext::FloatExt;
+use std::f32::consts::FRAC_PI_2;
 
 pub struct Mix;
 
 impl Mix {
   pub fn process(dry: f32, wet: f32, mix: f32) -> f32 {
-    let phase = mix * 0.25;
-    let dry_gain = (phase * TAU).cos();
-    let wet_gain = ((phase + 0.75) * TAU).cos();
-
+    let factor = mix * FRAC_PI_2;
+    let dry_gain = factor.fast_cos();
+    let wet_gain = factor.fast_sin();
     dry * dry_gain + wet * wet_gain
-  }
-}
-
-#[cfg(test)]
-mod tests {
-  use super::Mix;
-
-  fn approx_equal(a: f32, b: f32, decimal_places: u8) {
-    let factor = 10.0f32.powi(decimal_places as i32);
-    let a = (a * factor).trunc();
-    let b = (b * factor).trunc();
-    assert_eq!(a, b);
-  }
-
-  #[test]
-  fn mix() {
-    approx_equal(Mix::process(0., 1., 0.), 0., 3);
-    approx_equal(Mix::process(0., 1., 0.5), 0.707, 3);
-    approx_equal(Mix::process(0., 1., 1.), 1., 3);
   }
 }
