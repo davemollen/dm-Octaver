@@ -1,48 +1,35 @@
+use crate::FloatExt;
+
+const ATTACK: f32 = 1.5;
+const RELEASE: f32 = 30.;
+
 pub struct Slide {
-  sample_rate: f32,
+  slide_up: f32,
+  slide_down: f32,
   z: f32,
 }
 
 impl Slide {
   pub fn new(sample_rate: f32) -> Self {
-    Self { z: 0., sample_rate }
+    Self {
+      slide_up: ATTACK.mstosamps(sample_rate).recip(),
+      slide_down: RELEASE.mstosamps(sample_rate).recip(),
+      z: 1.,
+    }
   }
 
-  pub fn process(&mut self, input: f32, attack: f32, release: f32) -> f32 {
-    let slide = if input > self.z {
-      (input - self.z) * (1. / self.ms_to_samples(attack))
+  pub fn process(&mut self, input: f32) -> f32 {
+    if input.is_equal_to(self.z) {
+      input
     } else {
-      (input - self.z) * (1. / self.ms_to_samples(release))
-    };
-    let output = slide + self.z;
-    self.z = output;
-    output
-  }
-
-  fn ms_to_samples(&mut self, milliseconds: f32) -> f32 {
-    milliseconds / 1000. * (self.sample_rate as f32)
-  }
-}
-
-#[cfg(test)]
-mod tests {
-  use super::slide::Slide;
-
-  #[test]
-  fn slide_one() {
-    let mut slide = Slide::new(1000.);
-    assert_eq!(slide.process(1., 10., 100.), 0.1);
-  }
-
-  #[test]
-  fn slide_two() {
-    let mut slide = Slide::new(1000.);
-    assert_eq!(slide.process(-1., 10., 100.), -0.01);
-  }
-
-  #[test]
-  fn mstosamps() {
-    let mut slide = Slide::new(44100.);
-    assert_eq!(slide.ms_to_samples(2000.), 88200.);
+      let difference = input - self.z;
+      self.z += difference
+        * if input > self.z {
+          self.slide_up
+        } else {
+          self.slide_down
+        };
+      self.z
+    }
   }
 }

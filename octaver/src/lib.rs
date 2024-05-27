@@ -26,7 +26,7 @@ impl Octaver {
   }
 
   pub fn process(&mut self, input: f32, threshold: f32, gain: f32, mix: f32) -> f32 {
-    let gate_output = self.noise_gate.process(input, threshold, 1.5, 30.);
+    let gate_output = self.noise_gate.process(input, threshold);
     let lowpass_filter_output = self.lowpass_filter.process(gate_output);
     let clip_output = (lowpass_filter_output * 10000.).clamp(-1., 1.);
     let trigger = self.delta.process(clip_output.signum()) > 0.;
