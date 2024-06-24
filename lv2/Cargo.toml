@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["davemollen <davemollen@gmail.com>"]
 
 [dependencies]
-lv2 = "0.6.0"
+lv2 = { version = "0.6.0", features = ["minimal_plugin"] }
 octaver = { path = "../octaver" }
 
 [lib]
