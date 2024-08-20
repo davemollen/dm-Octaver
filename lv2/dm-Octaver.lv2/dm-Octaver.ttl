@@ -1,8 +1,10 @@
 @prefix doap:  <http://usefulinc.com/ns/doap#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
 @prefix lv2:   <http://lv2plug.in/ns/lv2core#> .
 @prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix units: <http://lv2plug.in/ns/extensions/units#> .
+@prefix mod:   <http://moddevices.com/ns/mod#> .
 
 <https://github.com/davemollen/dm-Octaver>
 	a lv2:Plugin ,
@@ -10,7 +12,17 @@
 	lv2:project <http://lv2plug.in/ns/lv2> ;
 	doap:name "dm-Octaver" ;
 	doap:license "GPLv3" ;
+	doap:maintainer [
+		foaf:name "Dave Mollen" ;
+		foaf:homepage <https://github.com/davemollen/dm-Octaver> ;
+	] ;
+	lv2:requiredFeature lv2:inPlaceBroken ;
 	lv2:optionalFeature lv2:hardRTCapable ;
+	mod:brand "DM" ;
+	mod:label "Octaver" ;
+	rdfs:comment """
+A harsh octave down effect.
+""" ;
 	lv2:port [
 		a lv2:InputPort, lv2:ControlPort ;
 		lv2:index 0 ;
