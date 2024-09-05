@@ -4,15 +4,21 @@ mod noise_gate;
 mod one_pole_filter;
 mod shared {
   pub mod float_ext;
+  pub mod slide;
 }
+mod envelope_follower;
 pub use shared::float_ext::FloatExt;
-use {delta::Delta, mix::Mix, noise_gate::NoiseGate, one_pole_filter::OnePoleFilter};
+use {
+  delta::Delta, envelope_follower::EnvelopeFollower, mix::Mix, noise_gate::NoiseGate,
+  one_pole_filter::OnePoleFilter,
+};
 
 pub struct Octaver {
   lowpass_filter: OnePoleFilter,
   delta: Delta,
   noise_gate: NoiseGate,
   flip_flop: f32,
+  envelope_follower: EnvelopeFollower,
 }
 
 impl Octaver {
@@ -22,6 +28,7 @@ impl Octaver {
       delta: Delta::new(),
       noise_gate: NoiseGate::new(sample_rate),
       flip_flop: 1.,
+      envelope_follower: EnvelopeFollower::new(sample_rate),
     }
   }
 
@@ -38,7 +45,8 @@ impl Octaver {
       }
     };
     let octaver = clip_output * self.flip_flop * gain;
+    let wet = self.envelope_follower.process(octaver, input);
 
-    Mix::process(input, octaver, mix)
+    Mix::process(input, wet, mix)
   }
 }

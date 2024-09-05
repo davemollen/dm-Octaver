@@ -1,5 +1,4 @@
-mod slide;
-use slide::Slide;
+use crate::shared::slide::Slide;
 
 pub struct NoiseGate {
   slide: Slide,
@@ -8,7 +7,7 @@ pub struct NoiseGate {
 impl NoiseGate {
   pub fn new(sample_rate: f32) -> Self {
     Self {
-      slide: Slide::new(sample_rate),
+      slide: Slide::new(sample_rate, 1.5, 30.),
     }
   }
 
