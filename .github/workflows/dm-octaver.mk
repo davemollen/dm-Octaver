@@ -9,11 +9,6 @@ DM_OCTAVER_SITE = https://github.com/davemollen/dm-Octaver.git
 DM_OCTAVER_SITE_METHOD = git
 DM_OCTAVER_BUNDLES = dm-Octaver.lv2
 
-# Nightly toolchain is needed to enable simd for more performant up- and downsampling
-define DM_OCTAVER_CONFIGURE_CMDS
-	~/.cargo/bin/rustup default stable
-endef
-
 define DM_OCTAVER_BUILD_CMDS
 	rm -f $(@D)/lv2/dm-Octaver.lv2/libdm_octaver.so
 	(cd $(@D)/lv2 && \
