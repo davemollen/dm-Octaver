@@ -11,7 +11,7 @@ fn octaver_bench(c: &mut Criterion) {
   c.bench_function("octaver", |b| {
     b.iter(|| {
       for signal in &signal_stream {
-        octaver.process(*signal, 0.05, 1., 0.75);
+        octaver.process(*signal, 1., 0.75);
       }
     })
   });

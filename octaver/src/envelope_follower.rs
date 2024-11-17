@@ -1,4 +1,5 @@
-use crate::shared::slide::Slide;
+mod slide;
+use slide::Slide;
 
 pub struct EnvelopeFollower {
   slide: Slide,

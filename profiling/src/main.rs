@@ -7,6 +7,6 @@ fn main() {
 
   loop {
     let input = generate_signal();
-    octaver.process(input, 0.05, 1., 0.75);
+    octaver.process(input, 1., 0.75);
   }
 }
