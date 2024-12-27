@@ -1,14 +1,15 @@
 mod delta;
 mod mix;
 mod one_pole_filter;
+mod params;
 mod shared {
   pub mod float_ext;
 }
 mod envelope_follower;
-pub use shared::float_ext::FloatExt;
+pub use params::Params;
 use {
-  delta::Delta, envelope_follower::EnvelopeFollower, mix::Mix,
-  one_pole_filter::OnePoleFilter,
+  delta::Delta, envelope_follower::EnvelopeFollower, mix::Mix, one_pole_filter::OnePoleFilter,
+  params::Smoother, shared::float_ext::FloatExt,
 };
 
 pub struct Octaver {
@@ -28,7 +29,10 @@ impl Octaver {
     }
   }
 
-  pub fn process(&mut self, input: f32, gain: f32, mix: f32) -> f32 {
+  pub fn process(&mut self, input: f32, params: &mut Params) -> f32 {
+    let gain = params.gain.next();
+    let mix = params.mix.next();
+
     let lowpass_filter_output = self.lowpass_filter.process(input);
     let clip_output = (lowpass_filter_output * 10000.).clamp(-1., 1.);
     let trigger = self.delta.process(clip_output.signum()) > 0.;
