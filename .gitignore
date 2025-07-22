@@ -1,2 +1,6 @@
 target
 .DS_Store
+*.svg
+*libdm_octaver.so
+*libdm_octaver.dylib
+*libdm_octaver.dll
