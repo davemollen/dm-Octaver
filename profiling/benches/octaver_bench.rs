@@ -1,7 +1,7 @@
 #[path = "../src/utils.rs"]
 mod utils;
 use criterion::{criterion_group, criterion_main, Criterion};
-use octaver::Octaver;
+use octaver::{Octaver, Params};
 use utils::generate_signal_stream;
 
 fn octaver_bench(c: &mut Criterion) {

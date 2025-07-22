@@ -5,10 +5,10 @@ use octaver::{Octaver, Params};
 
 #[derive(PortCollection)]
 struct Ports {
-  gain: InputPort<Control>,
-  mix: InputPort<Control>,
-  input: InputPort<Audio>,
-  output: OutputPort<Audio>,
+  gain: InputPort<InPlaceControl>,
+  mix: InputPort<InPlaceControl>,
+  input: InputPort<InPlaceAudio>,
+  output: OutputPort<InPlaceAudio>,
 }
 
 #[uri("https://github.com/davemollen/dm-Octaver")]
@@ -37,10 +37,11 @@ impl Plugin for DmOctaver {
   // Process a chunk of audio. The audio ports are dereferenced to slices, which the plugin
   // iterates over.
   fn run(&mut self, ports: &mut Ports, _features: &mut (), _sample_count: u32) {
-    self.params.set(*ports.gain, *ports.mix * 0.01);
+    self.params.set(ports.gain.get(), ports.mix.get() * 0.01);
 
-    for (in_frame, out_frame) in ports.input.iter().zip(ports.output.iter_mut()) {
-      *out_frame = self.octaver.process(*in_frame, &mut self.params);
+    for (input, output) in ports.input.iter().zip(ports.output.iter()) {
+      let octaver_output = self.octaver.process(input.get(), &mut self.params);
+      output.set(octaver_output);
     }
   }
 }
