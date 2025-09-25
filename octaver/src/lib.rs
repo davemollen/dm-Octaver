@@ -17,6 +17,7 @@ pub struct Octaver {
   delta: Delta,
   flip_flop: f32,
   envelope_follower: EnvelopeFollower,
+  mix: Mix,
 }
 
 impl Octaver {
@@ -26,6 +27,7 @@ impl Octaver {
       delta: Delta::new(),
       flip_flop: 1.,
       envelope_follower: EnvelopeFollower::new(sample_rate),
+      mix: Mix::new(),
     }
   }
 
@@ -46,6 +48,6 @@ impl Octaver {
     let octaver = clip_output * self.flip_flop * gain;
     let wet = self.envelope_follower.process(octaver, input);
 
-    Mix::process(input, wet, mix)
+    self.mix.process(input, wet, mix)
   }
 }
